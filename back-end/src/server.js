@@ -1,5 +1,13 @@
 import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import admin from 'firebase-admin';
+import fs from 'fs';
+
+const credentials = JSON.parse(fs.readFileSync('./credentials.json'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials)
+});
 
 /**
  * @fileoverview This file sets up an Express server and defines a route handler.
@@ -91,6 +99,13 @@ const client = new MongoClient(uri, {  serverApi: ServerApiVersion.v1 });
   });
 
 
+  //called for each request that hasnt bendled yet
+  app.use(async function(req, res, next) {
+      const { authorization } = req.headers; // Get the authorization header from the request
+
+
+  });
+
   app.post('/api/articles/:name/upvote', async (req, res) => {
     const { name } = req.params;
   
@@ -121,6 +136,7 @@ const client = new MongoClient(uri, {  serverApi: ServerApiVersion.v1 });
 
     const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
       $push: { comments: newComment }
+      
     }, {
       returnDocument: "after",
     });
@@ -141,7 +157,7 @@ const client = new MongoClient(uri, {  serverApi: ServerApiVersion.v1 });
   });
 
 async function start(params) {
-  await connectToDB();
+  await connectToDB(); //Remember neeed to specify defgault data directory using --dbpath!
   app.listen(8000, () => {
     console.log('Server is running on port 8000');
   });
@@ -149,4 +165,6 @@ async function start(params) {
 
 start();
   
+
+
 // });

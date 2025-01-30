@@ -7,8 +7,10 @@ import ArticlesListPage from './pages/ArticleListPage';
 import AboutPage from './pages/aboutpage';
 import NavBar from './pages/NavBar';
 import Layout from './Layout';
-import ArticlePage, {loader as articleLoader} from './pages/Articlepage';
+import ArticlePage, {loader as articleLoader} from './pages/ArticlePage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from './pages/LoginPage';
+import CreateAccountPage from './pages/CreateAccountPage';
 
 const routes = [
   {
@@ -23,6 +25,8 @@ const routes = [
       {
         path: '/about',
         element: <AboutPage />
+
+
       },
       {
         path: '/articles',
@@ -32,6 +36,12 @@ const routes = [
         path: '/articles/:name', // This is a dynamic path that will be used to display the article
         element: <ArticlePage />,
         loader: articleLoader
+      },{
+        path: '/login',
+        element: <LoginPage />
+      }, {
+          path: '/create-account',
+          element: <CreateAccountPage />
       }
     ]
   }
